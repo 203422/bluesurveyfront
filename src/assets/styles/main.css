@@ -1,0 +1,38 @@
+:root {
+    --blueColor: #2561A9;
+    --ligthBlueColor: #5D89BF;
+    --whiteColor: #FFFFFF;
+    --greenColor: #25B7B5;
+    --blueColorB: #1757A3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--blueColor);
+}
+
+h1 {
+    font-size: 5.4rem;
+    margin: 0;
+}
+
+p {
+    font-size: 1.6rem;
+}
+
+
+.container {
+    max-width: 120rem;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
