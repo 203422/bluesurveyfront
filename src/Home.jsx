@@ -1,7 +1,16 @@
 import './assets/styles/home.css'
 import Button from './components/Button'
+import { useAuth } from './auth/AuthProvider';
+import { Navigate } from 'react-router-dom';
 
 const Home = () => {
+
+    const auth = useAuth();
+
+    if(auth.isAuthenticated) {
+        return <Navigate to="/dashboard" />
+    }
+    
     return (
         <div>
             <section className='container_title container'>
