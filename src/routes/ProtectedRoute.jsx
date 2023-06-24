@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
+
+
 const ProtectedRoute = () => {
     const auth = useAuth()
 

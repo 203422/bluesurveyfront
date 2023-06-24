@@ -21,8 +21,8 @@ const Home = () => {
 
                 <div className='content'>
                     <p className='p_description'>"Conéctate con tu audiencia, pregunta y ellos responden"</p>
-                    <Button text='Iniciar Sesión' color='green' />
-                    <Button text='Registrarse' color='blue' />
+                    <Button text='Iniciar Sesión' color='green' to="/login" />
+                    <Button text='Registrarse' color='blue' to="/signup" />
                 </div>
                 <div className='container_content_img'>
                 </div>
