@@ -3,7 +3,6 @@ import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import API_URL from "../auth/constants";
 import Button from '../components/Button'
-import '../assets/styles/login.css'
 
 const Login = () => {
 
@@ -14,7 +13,7 @@ const Login = () => {
     const auth = useAuth();
     const goTo = useNavigate();
 
-    if(auth.isAuthenticated) {
+    if (auth.isAuthenticated) {
         return <Navigate to="/dashboard" />
     }
 
@@ -36,10 +35,10 @@ const Login = () => {
             if (response.ok) {
                 setErrorMessage("");
                 console.log("Sesión iniciada")
-                
+
                 const json = await response.json();
 
-                if(json.body.accessToken && json.body.refreshToken) {
+                if (json.body.accessToken && json.body.refreshToken) {
                     // console.log("Access Token", json.body.accessToken, "RefreshToken", json.body.refreshToken)
                     auth.saveUser(json)
                     goTo("/dashboard")
@@ -57,31 +56,39 @@ const Login = () => {
         }
     }
 
-    return (  
-        <form className="form container" onSubmit={handleSubmit}>
-            <h2 className="title_login">Bienvenido de nuevo</h2>
-            {errorMessage && <p>{errorMessage}</p>}
-            <label className="label">Correo</label>
-            <input
-                className="input"
-                type="email"
-                placeholder="correo@gmail.com"
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <label className="label">Contraseña</label>
-            <input
-                className="input"
-                type="password"
-                placeholder="********"
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-                text="Iniciar Sesión"
-                color="green"
-                style="buttonForm"
+    const handleClick = () => {
+        goTo('/signup')
+    }
 
-            />
-        </form>
+    return (
+        <div className="form-container">
+            <form className="form container" onSubmit={handleSubmit}>
+                <h2 className="title_login">Bienvenido de nuevo</h2>
+                {errorMessage && <p>{errorMessage}</p>}
+                <label className="label">Correo</label>
+                <input
+                    className="input"
+                    type="email"
+                    placeholder="correo@gmail.com"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <label className="label">Contraseña</label>
+                <input
+                    className="input"
+                    type="password"
+                    placeholder="********"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button
+                    text="Iniciar Sesión"
+                    color="green"
+                    style="buttonForm"
+                />
+                <p className="text-center">¿Aún no tienes cuenta? <span onClick={handleClick}>Registrate</span> </p>
+            </form>
+        </div>
+
+
     );
 }
 

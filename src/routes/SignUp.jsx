@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import API_URL from "../auth/constants";
+import '../assets/styles/form.css'
+import Button from "../components/Button";
 
 const SignUp = () => {
 
@@ -51,36 +53,50 @@ const SignUp = () => {
         }
     }
 
+    const handleClick = () => {
+        goTo('/login')
+    }
+
     return (
+        <div className="form-container">
+            <form className="container form" onSubmit={handleSubmit}>
+                <h2 className="title_signup">Sign Up</h2>
+                {errorMessage && <p>{errorMessage}</p>}
+                <label className="label">Nombre</label>
+                <input
+                    className="input"
+                    type="text"
+                    placeholder="Nombre"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <label className="label">Correo</label>
+                <input
+                    className="input"
+                    type="email"
+                    placeholder="correo@gmail.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
 
-        <form onSubmit={handleSubmit}>
-            <h2>Sign Up</h2>
-            {errorMessage && <p>{errorMessage}</p>} 
-            <label>Nombre</label>
-            <input
-                type="text"
-                placeholder="Nombre"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <label>Correo</label>
-            <input
-                type="email"
-                placeholder="correo@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+                <label className="label">Contraseña</label>
+                <input
+                    className="input"
+                    type="password"
+                    placeholder="********"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
 
-            <label>Contraseña</label>
-            <input
-                type="password"
-                placeholder="********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button
+                    color="green"
+                    text="Registrarse"
+                    style="buttonForm"
+                />
+                <p className="text-center">¿Ya tienes cuenta? <span onClick={handleClick}>Inicia Sesión</span> </p>
+            </form>
+        </div>
 
-            />
-            <button>Registrarse</button>
-        </form>
 
     );
 }
