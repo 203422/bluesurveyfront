@@ -4,6 +4,9 @@
     --whiteColor: #FFFFFF;
     --greenColor: #25B7B5;
     --blueColorB: #1757A3;
+    --lightGray: #EAEBED;
+    --gray: #CCCCCC;
+    --blackColor: #303030;
 }
 
 * {
@@ -18,10 +21,17 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background-color: var(--blueColor);
+    color: var(--blackColor);
 }
 
 h1 {
     font-size: 5.4rem;
+    margin: 0;
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: 500;
     margin: 0;
 }
 

@@ -1,7 +1,7 @@
 import '../assets/styles/button.css'
 import { useNavigate } from 'react-router-dom'
 
-const Button = ( { text, color, to } ) => {
+const Button = ( { text, color, to, style } ) => {
 
     const goTo = useNavigate();
 
@@ -10,7 +10,7 @@ const Button = ( { text, color, to } ) => {
     }
 
     return (
-        <button className={`button_component ${color}`} onClick={handleClick}>
+        <button className={`button_component ${color} ${style}`} onClick={handleClick}>
             {text}
         </button>
     )

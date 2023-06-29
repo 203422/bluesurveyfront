@@ -16,3 +16,7 @@
 .blue {
     background-color: var(--blueColorB);
 }
+
+.buttonForm {
+    width: 100%;
+}
