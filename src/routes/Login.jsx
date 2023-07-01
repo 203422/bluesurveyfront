@@ -37,8 +37,10 @@ const Login = () => {
                 console.log("Sesión iniciada")
 
                 const json = await response.json();
+                console.log(json)
 
                 if (json.body.accessToken && json.body.refreshToken) {
+                    console.log(json)
                     // console.log("Access Token", json.body.accessToken, "RefreshToken", json.body.refreshToken)
                     auth.saveUser(json)
                     goTo("/dashboard")
@@ -64,7 +66,7 @@ const Login = () => {
         <div className="form-container">
             <form className="form container" onSubmit={handleSubmit}>
                 <h2 className="title_login">Bienvenido de nuevo</h2>
-                {errorMessage && <p>{errorMessage}</p>}
+                {errorMessage && <p className="alert">{errorMessage}</p>}
                 <label className="label">Correo</label>
                 <input
                     className="input"

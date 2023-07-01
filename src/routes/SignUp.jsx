@@ -61,7 +61,7 @@ const SignUp = () => {
         <div className="form-container">
             <form className="container form" onSubmit={handleSubmit}>
                 <h2 className="title_signup">Sign Up</h2>
-                {errorMessage && <p>{errorMessage}</p>}
+                {errorMessage && <p className="alert">{errorMessage}</p>}
                 <label className="label">Nombre</label>
                 <input
                     className="input"

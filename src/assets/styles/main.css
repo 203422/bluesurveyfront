@@ -1,4 +1,5 @@
 :root {
+    --font: 'Poppins', sans-serif;
     --blueColor: #2561A9;
     --ligthBlueColor: #5D89BF;
     --whiteColor: #FFFFFF;
@@ -7,6 +8,7 @@
     --lightGray: #EAEBED;
     --gray: #CCCCCC;
     --blackColor: #303030;
+    --redColor: #E65C4F;
 }
 
 * {
@@ -19,7 +21,7 @@ html {
 
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font);
     background-color: var(--blueColor);
     color: var(--blackColor);
 }

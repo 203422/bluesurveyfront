@@ -9,6 +9,7 @@ import Dashboard from './routes/Dashboard'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ProtectedRoute from './routes/ProtectedRoute'
+import NuevaEncuestaForm from './routes/NuevaEncuestaForm'
 import { AuthProvider } from './auth/AuthProvider'
 
 const router = createBrowserRouter([
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
         element: <Dashboard />
       }
     ]
+  },{
+    path: "/encuesta",
+    element: <NuevaEncuestaForm />
   }
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

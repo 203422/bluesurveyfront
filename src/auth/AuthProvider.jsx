@@ -5,8 +5,9 @@ const AuthContext = createContext({
     isAuthenticated: false,
     getAccessToken: () => { },
     saveUser: () => { },
-    getRefreshToken: () => { }, 
-    getUser: () => {}
+    getRefreshToken: () => { },
+    getUser: () => { },
+    signOut: () => { }
 })
 
 const AuthProvider = ({ children }) => {
@@ -62,6 +63,12 @@ const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
         if (accessToken) {
             //El usuario está autenticado
+            const userInfo = await getUserInfo(accessToken);
+            console.log('Informacion de usuario autenticado', userInfo)
+            if (userInfo) {
+                console.log(userInfo)
+                saveSessionInfo(userInfo, accessToken, getRefreshToken)
+            }
         } else {
             //El usuario no está autenticado
             const token = getRefreshToken();
@@ -69,20 +76,19 @@ const AuthProvider = ({ children }) => {
                 const newAccessToken = await requestNewAccessToken(token);
                 if (newAccessToken) {
                     const userInfo = await getUserInfo(newAccessToken);
-                    console.log('INfo en el checku', userInfo)
-                    if(userInfo) {
+                    if (userInfo) {
                         saveSessionInfo(userInfo, newAccessToken, token)
                     }
                 }
             }
         }
     }
-    
+
     const saveSessionInfo = (userInfo, accessToken, refreshToken) => {
         setAccessToken(accessToken);
         localStorage.setItem("token", JSON.stringify(refreshToken));
-        setIsAuthenticated(true);
         setUser(userInfo)
+        setIsAuthenticated(true);
     }
 
     const getAccessToken = () => {
@@ -99,6 +105,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const saveUser = (userData) => {
+        console.log('SaveUser', userData)
         saveSessionInfo(userData.body.user, userData.body.accessToken, userData.body.refreshToken)
     }
 
@@ -106,12 +113,19 @@ const AuthProvider = ({ children }) => {
         return user;
     }
 
+    const signOut = () => {
+        setIsAuthenticated(false);
+        setAccessToken("");
+        setUser(undefined);
+        localStorage.removeItem("token")
+    }
+
     useEffect(() => {
         checkAuth();
-     }, []);
+    }, []);
 
 
-    return <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, getRefreshToken, getUser }}>
+    return <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, getRefreshToken, getUser, signOut }}>
         {children}
     </AuthContext.Provider>
 }
