@@ -1,85 +1,86 @@
-import { useState } from 'react';
-import '../assets/styles/survey.css'
-import API_URL from '../auth/constants';
-import { useAuth } from '../auth/AuthProvider'; 
+import API_URL from '../auth/constants'
+import { useAuth } from '../auth/AuthProvider'
+import { useEffect, useState } from 'react';
+import xmark from '../assets/img/xmark.svg'
+import deleteIcon from '../assets/img/delete.svg'
 
-const Survey = ({ state, changeState, updateSurvey }) => {
+const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [showSurvey, setShowSurvey] = useState({});
+
 
     const auth = useAuth();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        loadDataSurvey();
+    }, [])
 
-        try {
-
-            const response = await fetch(`${API_URL}/surveys`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.getAccessToken()}`
-                },
-                body: JSON.stringify({
-                    title,
-                    description
-                })
-            });
-
-            if (response.ok) {
-                const newSurvey = await response.json();
-                updateSurvey( (surveys) => [...surveys, newSurvey])
-                console.log('Encuesta creada correctamente');
-                setTitle("")
-                setDescription("")
-                changeState(false)
-            } else {
-                console.log("La encuesta no se pudo crear");
+    const loadDataSurvey = async () => {
+        const response = await fetch(`${API_URL}/surveys/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.getAccessToken()}`
             }
+        })
 
-        } catch (error) {
-            console.log(error)
+        if (response.ok) {
+            const json = await response.json();
+            setShowSurvey(json)
         }
     }
 
-    const toggleModal = () => {
-        setTitle("");
-        setDescription("")
-        changeState(false)
+    const deleteSurvey = async () => {
+        const response = await fetch(`${API_URL}/surveys/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.getAccessToken()}`
+            }
+        })
+
+        if (response.ok) {
+            console.log('Encuesta eliminada')
+            closeSurvey(null)
+            updateSurveys();
+        } else {
+            console.log('Error al eliminar')
+        }
     }
 
     return (
         <>
-            {state &&
-                <div className='overlay'>
-                    <div className='container-content container'>
-                        <form className='form_modal' onSubmit={handleSubmit}>
-                            <label className='label_modal'>Nombre de la encuesta</label>
-                            <input
-                                className='input'
-                                placeholder='Título'
-                                type='text'
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
-
-                            <label className='label_modal'>Descripcion</label>
-                            <input
-                                className='input'
-                                placeholder="Descripcion"
-                                type='text'
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                            <div className='buttons_modal'>
-                                <button className='aceptar button_modal' type='submit'>Aceptar</button>
-                                <button className='cancelar button_modal' onClick={toggleModal}>Cancelar</button>
-                            </div>
-                        </form>
+            <div className='overlay'>
+                <div className='container_survey_pre container'>
+                    <img onClick={() => closeSurvey(null)} className='xmark' src={xmark} />
+                    <div className='survey_pre_header'>
+                        <h2 className='title_survey'>{showSurvey.title}</h2>
+                        <p className='description_survey'>{showSurvey.description}</p>
                     </div>
+                    <div className='survey_pre_content'>
+                        {showSurvey.questions && showSurvey.questions.map((question, id) => (
+                            <div key={id}>
+                                <div className='container_question'>
+                                    <p className='question'>{question.question}</p>
+
+                                    {question.type == "abierta" ? <div className='container_answer_open'>
+                                        <p>Escribe una o varias palabras...</p>
+                                    </div> : null}
+                                    <ul>
+                                        {question.answers && question.answers.map((answer, index) => (
+                                            <li key={index}>{answer}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='survery_pre_footer' onClick={deleteSurvey}>
+                        <img src={deleteIcon} />
+                    </div>
+
                 </div>
-            }
+            </div>
         </>
     );
 }

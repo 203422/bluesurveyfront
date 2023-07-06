@@ -9,8 +9,12 @@
     color: var(--whiteColor);
 }
 
+.button_component:hover {
+    cursor: pointer;
+}
+
 .green {
-    background-color: var(--greenColor);    
+    background-color: var(--greenColor);
 }
 
 .blue {

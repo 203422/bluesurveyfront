@@ -22,12 +22,13 @@ html {
 body {
     margin: 0;
     font-family: var(--font);
-    background-color: var(--blueColor);
+    background-color: var(--whiteColor);
     color: var(--blackColor);
 }
 
+
 h1 {
-    font-size: 5.4rem;
+    font-size: 5rem;
     margin: 0;
 }
 
@@ -48,3 +49,4 @@ p {
     margin-left: auto;
     margin-right: auto;
 }
+

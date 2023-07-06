@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import API_URL from "../auth/constants";
 import Button from '../components/Button'
+import Wave from '../layout/Wave'
 
 const Login = () => {
 
@@ -37,8 +38,7 @@ const Login = () => {
                 console.log("Sesión iniciada")
 
                 const json = await response.json();
-                console.log(json)
-
+                
                 if (json.body.accessToken && json.body.refreshToken) {
                     console.log(json)
                     // console.log("Access Token", json.body.accessToken, "RefreshToken", json.body.refreshToken)
@@ -63,34 +63,35 @@ const Login = () => {
     }
 
     return (
-        <div className="form-container">
-            <form className="form container" onSubmit={handleSubmit}>
-                <h2 className="title_login">Bienvenido de nuevo</h2>
-                {errorMessage && <p className="alert">{errorMessage}</p>}
-                <label className="label">Correo</label>
-                <input
-                    className="input"
-                    type="email"
-                    placeholder="correo@gmail.com"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label className="label">Contraseña</label>
-                <input
-                    className="input"
-                    type="password"
-                    placeholder="********"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <Button
-                    text="Iniciar Sesión"
-                    color="green"
-                    style="buttonForm"
-                />
-                <p className="text-center">¿Aún no tienes cuenta? <span onClick={handleClick}>Registrate</span> </p>
-            </form>
-        </div>
-
-
+        <>
+            <Wave />
+            <div className="form-container">
+                <form className="form container" onSubmit={handleSubmit}>
+                    <h2 className="title_login">Bienvenido de nuevo</h2>
+                    {errorMessage && <p className="alert">{errorMessage}</p>}
+                    <label className="label">Correo</label>
+                    <input
+                        className="input"
+                        type="email"
+                        placeholder="correo@gmail.com"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <label className="label">Contraseña</label>
+                    <input
+                        className="input"
+                        type="password"
+                        placeholder="********"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <Button
+                        text="Iniciar Sesión"
+                        color="green"
+                        style="buttonForm"
+                    />
+                    <p className="text-center">¿Aún no tienes cuenta? <span className="span" onClick={handleClick}>Registrate</span> </p>
+                </form>
+            </div>
+        </>
     );
 }
 

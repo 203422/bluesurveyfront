@@ -3,12 +3,16 @@ import API_URL from '../auth/constants'
 import { useEffect, useState } from 'react'
 import '../assets/styles/dashboard.css'
 import Header from '../layout/Header'
+import SurveyModal from '../components/SurveyModal'
+import deleteIcon from '../assets/img/delete.svg'
 import Survey from '../components/Survey'
 
 const Dashboard = () => {
 
     const [stateModal, setStateModal] = useState(false)
     const [surveys, setSurveys] = useState([])
+    const [selectedSurvey, setSelectedSurvey] = useState(null);
+
 
     const auth = useAuth();
 
@@ -42,18 +46,43 @@ const Dashboard = () => {
         <>
             <Header />
 
-            <h1>Dashboard de {auth.getUser().name}</h1>
 
-            <div className='container container_surveys'>
-                <Survey
+
+            <div className='container'>
+                {/* <h1>Dashboard de {auth.getUser().name}</h1> */}
+                <div className="container_surveys">
+
+                    {surveys.map((survey) => (<div onClick={() => setSelectedSurvey(survey._id)} className="container_survey" key={survey._id}>
+                        <div className='container_survey_header'>
+                            <div className='icons'>
+
+                            </div>
+                            {survey.title}
+                        </div>
+                        <div className='container_survey_footer'>
+                            Preguntas: {survey.questions.length}
+                        </div>
+
+                    </div>))}
+
+                    {selectedSurvey && <Survey
+                        id={selectedSurvey}
+                        closeSurvey={setSelectedSurvey}
+                        updateSurveys={loadSurveys}
+                    />}
+
+                </div>
+                <SurveyModal
                     state={stateModal}
                     changeState={setStateModal}
-                    updateSurvey = {setSurveys}
+                    updateSurvey={setSurveys}
                 />
-                <button onClick={() => setStateModal(!stateModal)}>Crear encuesta</button>
+
+                <button className='crear_encuesta' onClick={() => setStateModal(!stateModal)}>Crear encuesta</button>
             </div>
 
-            {surveys.map((survey) => (<div key={survey._id}>{survey.title}</div>))}
+
+
 
         </>
     );

@@ -9,7 +9,7 @@ const Header = ({ children }) => {
 
     const handleSignout = async (e) => {
         e.preventDefault();
-        
+
         try {
             const response = await fetch(`${API_URL}/signout`, {
                 method: "DELETE",
@@ -19,12 +19,12 @@ const Header = ({ children }) => {
                 }
             })
 
-            if(response.ok) {
+            if (response.ok) {
                 auth.signOut();
             }
 
         } catch (error) {
-            
+
         }
     }
     return (
@@ -33,15 +33,16 @@ const Header = ({ children }) => {
                 <nav className="nav">
                     <ul className="ul">
                         <li className="li">
-                            <Link to="/dashboard">Dashboard</Link>
+                            <Link className="link" to="/dashboard">Dashboard</Link>
+                        </li>
+                        <li className="li">
+                            <Link className="link" to="/me">Perfil</Link>
+                        </li>
+                        <li className="li">
+                            <a className="link" href="#" onClick={handleSignout}>Salir</a>
                         </li>
                     </ul>
-                    <li className="li">
-                        <Link to="/me">Perfil</Link>
-                    </li>
-                    <li className="li">
-                        <a href="#" onClick={handleSignout}>Salir</a>
-                    </li>
+
                 </nav>
             </header>
         </>
