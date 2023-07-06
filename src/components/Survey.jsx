@@ -75,8 +75,10 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                             </div>
                         ))}
                     </div>
-                    <div className='survery_pre_footer' onClick={deleteSurvey}>
-                        <img src={deleteIcon} />
+                    <div className='survery_pre_footer' >
+                        <button className='button_delete' onClick={deleteSurvey}>
+                            <img src={deleteIcon} />
+                        </button>
                     </div>
 
                 </div>

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import '../assets/styles/dashboard.css'
 import Header from '../layout/Header'
 import SurveyModal from '../components/SurveyModal'
-import deleteIcon from '../assets/img/delete.svg'
 import Survey from '../components/Survey'
+import createIcon from '../assets/img/createW.svg'
 
 const Dashboard = () => {
 
@@ -50,6 +50,10 @@ const Dashboard = () => {
 
             <div className='container'>
                 {/* <h1>Dashboard de {auth.getUser().name}</h1> */}
+                <button className='crear_encuesta' onClick={() => setStateModal(!stateModal)}>
+                    Crear encuesta
+                    <img src={createIcon} className='icon_create' />
+                </button>
                 <div className="container_surveys">
 
                     {surveys.map((survey) => (<div onClick={() => setSelectedSurvey(survey._id)} className="container_survey" key={survey._id}>
@@ -78,7 +82,7 @@ const Dashboard = () => {
                     updateSurvey={setSurveys}
                 />
 
-                <button className='crear_encuesta' onClick={() => setStateModal(!stateModal)}>Crear encuesta</button>
+
             </div>
 
 

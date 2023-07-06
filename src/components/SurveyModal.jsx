@@ -43,6 +43,7 @@ const Survey = ({ state, changeState, updateSurvey }) => {
                 setTitle("")
                 setDescription("")
                 setQuestions([])
+                setErrorMessage("")
                 changeState(false)
             } else {
                 console.log("La encuesta no se pudo crear");

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import '../assets/styles/question.css'
+import editIcon from '../assets/img/edit.svg'
+import deleteIcon from '../assets/img/delete.svg'
 
-const Question = ({questions, setQuestions}) => {
-    // const [questions, setQuestions] = useState([]);
+const Question = ({ questions, setQuestions }) => {
     const [currentQuestion, setCurrentQuestion] = useState("");
     const [currentQuestionType, setCurrentQuestionType] = useState("");
     const [currentAnswers, setCurrentAnswers] = useState([]);
@@ -46,6 +48,12 @@ const Question = ({questions, setQuestions}) => {
         setEditMode(true);
     };
 
+    const handleDeleteQuestion = (index) => {
+        const updatedQuestions  = [...questions];
+        updatedQuestions.splice(index, 1);
+        setQuestions(updatedQuestions);
+    }
+
     const renderAnswerInputs = () => {
         if (currentQuestionType === "opción unica" || currentQuestionType === "opción multiple") {
             return (
@@ -61,7 +69,7 @@ const Question = ({questions, setQuestions}) => {
                             placeholder={`Respuesta ${index + 1}`}
                         />
                     ))}
-                    <button onClick={addAnswer} type="button">Agregar respuesta</button>
+                    <button onClick={addAnswer} type="button" className="button add_question">Agregar respuesta</button>
                 </div>
             );
         }
@@ -83,7 +91,7 @@ const Question = ({questions, setQuestions}) => {
     return (
         <>
 
-            <div>
+            <div className="container_create_question">
                 <label className="label">Pregunta</label>
                 <input
                     className="input"
@@ -93,46 +101,61 @@ const Question = ({questions, setQuestions}) => {
                     onChange={(e) => setCurrentQuestion(e.target.value)}
                 />
 
-                <label className="label">Tipo de pregunta</label>
-                <select
-                    value={currentQuestionType}
-                    onChange={(e) => setCurrentQuestionType(e.target.value)}
-                >
-                    <option value="">Tipo de pregunta</option>
-                    <option value="abierta">Pregunta abierta</option>
-                    <option value="opción unica">Opción única</option>
-                    <option value="opción multiple">Opción múltiple</option>
-                </select>
-
-                <button className="button_modal aceptar" type="button" onClick={handleAddQuestion}>
-                    {editMode ? "Guardar cambios" : "Agregar pregunta"}
-                </button>
-                {editMode && (
-                    <button type="button" onClick={handleCancelEdit}>
-                        Cancelar
+                <div className="container_type_question">
+                    <label className="label">Tipo de pregunta</label>
+                    <select
+                        className="select button"
+                        value={currentQuestionType}
+                        onChange={(e) => setCurrentQuestionType(e.target.value)}
+                    >
+                        <option value="">Tipo de pregunta</option>
+                        <option value="abierta">Pregunta abierta</option>
+                        <option value="opción unica">Opción única</option>
+                        <option value="opción multiple">Opción múltiple</option>
+                    </select>
+                    <button className="button_add_question aceptar button" type="button" onClick={handleAddQuestion}>
+                        {editMode ? "Guardar cambios" : "Agregar pregunta"}
                     </button>
-                )}
-            </div>
-
-            {renderAnswerInputs()}
-
-            {questions.map((question, index) => (
-                <div key={index}>
-                    <p>Tipo de pregunta: {question.type}</p>
-                    <p>Pregunta: {question.question}</p>
-                    <p>Respuestas:</p>
-                    <ul>
-                        {question.answers.map((answer, answerIndex) => (
-                            <li key={answerIndex}>{answer}</li>
-                        ))}
-                    </ul>
-                    {!editMode && (
-                        <button type="button" onClick={() => handleEditQuestion(index)}>
-                            Editar pregunta
+                    {editMode && (
+                        <button type="button" className="button" onClick={handleCancelEdit}>
+                            Cancelar
                         </button>
                     )}
                 </div>
-            ))}
+            </div>
+
+
+
+
+
+
+            <div className="content_questions">
+                {renderAnswerInputs()}
+
+                {questions.map((question, index) => (
+                    <div key={index} className="container_question">
+                        <p>Tipo de pregunta: {question.type}</p>
+                        <p>Pregunta: {question.question}</p>
+                        <p>Respuestas:</p>
+                        <ul>
+                            {question.answers.map((answer, answerIndex) => (
+                                <li key={answerIndex}>{answer}</li>
+                            ))}
+                        </ul>
+                        {!editMode && (
+                            <div className="container_icons_question">
+                                <button className="button_edit" type="button">
+                                    <img  src={editIcon} onClick={() => handleEditQuestion(index)} />
+                                </button>
+                                <button className="button_delete" type="button">
+                                    <img  src={deleteIcon} onClick={() => handleDeleteQuestion(index)} />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
         </>
     );
 };

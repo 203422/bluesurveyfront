@@ -30,7 +30,7 @@ const Header = ({ children }) => {
     return (
         <>
             <header className="header">
-                <nav className="nav">
+                <nav className="nav container">
                     <ul className="ul">
                         <li className="li">
                             <Link className="link" to="/dashboard">Dashboard</Link>

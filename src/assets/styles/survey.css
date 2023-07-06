@@ -83,8 +83,7 @@
 }
 
 .content_modal {
-    max-height: 30rem;
-    overflow-y: scroll;
+    max-height: 50vh;
 }
 
 .footer_modal {
@@ -195,8 +194,6 @@
   .survery_pre_footer {
     display: flex;
     justify-content: center;
+    margin-top: 2rem;
   }
 
-  .survery_pre_footer:hover {
-    cursor: pointer;
-  }
