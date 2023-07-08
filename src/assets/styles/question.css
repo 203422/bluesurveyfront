@@ -44,3 +44,10 @@
     background-color: var(--whiteColor);
     border: none;
 }
+
+.container_add_answer {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 2rem;
+}

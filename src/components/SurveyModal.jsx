@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../assets/styles/survey.css'
 import API_URL from '../auth/constants';
 import { useAuth } from '../auth/AuthProvider';
 import Question from '../routes/Question';
 
-const Survey = ({ state, changeState, updateSurvey }) => {
+const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey }) => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -12,6 +12,18 @@ const Survey = ({ state, changeState, updateSurvey }) => {
     const [questions, setQuestions] = useState([])
 
     const auth = useAuth();
+
+    useEffect(() => {
+        if (enableEditMode) {
+            setTitle(survey.title);
+            setDescription(survey.description);
+            setQuestions(survey.questions);
+        } else {
+            setTitle('');
+            setDescription('');
+            setQuestions([]);
+        }
+    }, [enableEditMode, survey]);
 
     const handleUpdateQuestions = (newQuestions) => {
         setQuestions(newQuestions);
@@ -65,6 +77,32 @@ const Survey = ({ state, changeState, updateSurvey }) => {
         changeState(false)
     }
 
+    const sendUpdateSurvey = async () => {
+        try {
+            const response = await fetch(`${API_URL}/surveys/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${auth.getAccessToken()}`
+                },
+                body: JSON.stringify({
+                    title,
+                    description,
+                    questions,
+                })
+            })
+            if (response.ok) {
+                console.log('Encuesta actualizada')
+                loadDataSurvey();
+            }
+
+        } catch (error) {
+            console.log('Error al actualizar')
+        }
+        changeState(false)
+
+    }
+
 
     return (
         <>
@@ -97,17 +135,23 @@ const Survey = ({ state, changeState, updateSurvey }) => {
                                 <Question
                                     questions={questions}
                                     setQuestions={handleUpdateQuestions}
-                                    
+
                                 />
 
                             </div>
 
                             <div className='footer_modal'>
                                 <div className='buttons_modal'>
-                                    <button className='aceptar button_modal' type='submit'>Aceptar</button>
+
+                                    {
+                                        enableEditMode ? <button type='button' className='aceptar button_modal' onClick={sendUpdateSurvey}>Actualizar encuesta</button> :
+                                            <button className='aceptar button_modal' type='submit'>Aceptar</button>
+                                    }
+
+
+
                                     <button type='button' className='cancelar button_modal' onClick={toggleModal}>Cancelar</button>
                                 </div>
-
                             </div>
                         </form>
                     </div>

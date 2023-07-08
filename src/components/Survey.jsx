@@ -3,10 +3,13 @@ import { useAuth } from '../auth/AuthProvider'
 import { useEffect, useState } from 'react';
 import xmark from '../assets/img/xmark.svg'
 import deleteIcon from '../assets/img/delete.svg'
+import editIcon from '../assets/img/edit.svg'
+import SurveyModal from '../components/SurveyModal'
 
 const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
     const [showSurvey, setShowSurvey] = useState({});
+    const [editMode, setEditMode] = useState(false)
 
 
     const auth = useAuth();
@@ -48,6 +51,28 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
         }
     }
 
+    const enableEditMode = () => {
+        setEditMode(true);
+    }
+
+    const disableEditMode = () => {
+        setEditMode(false);
+    }
+
+    if (editMode) {
+        return (
+            <SurveyModal
+                state={true}
+                changeState={disableEditMode}
+                enableEditMode={enableEditMode}
+                survey={showSurvey}
+                id={id}
+                loadDataSurvey={loadDataSurvey}
+                
+            />
+        )
+    }
+
     return (
         <>
             <div className='overlay'>
@@ -78,6 +103,9 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                     <div className='survery_pre_footer' >
                         <button className='button_delete' onClick={deleteSurvey}>
                             <img src={deleteIcon} />
+                        </button>
+                        <button className='button_edit' onClick={enableEditMode}>
+                            <img src={editIcon} />
                         </button>
                     </div>
 

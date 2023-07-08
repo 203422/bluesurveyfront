@@ -57,7 +57,7 @@ const Question = ({ questions, setQuestions }) => {
     const renderAnswerInputs = () => {
         if (currentQuestionType === "opción unica" || currentQuestionType === "opción multiple") {
             return (
-                <div>
+                <div className="container_add_answer">
                     <label className="label">Respuestas:</label>
                     {currentAnswers.map((answer, index) => (
                         <input
@@ -121,6 +121,7 @@ const Question = ({ questions, setQuestions }) => {
                             Cancelar
                         </button>
                     )}
+                    {renderAnswerInputs()}
                 </div>
             </div>
 
@@ -130,7 +131,7 @@ const Question = ({ questions, setQuestions }) => {
 
 
             <div className="content_questions">
-                {renderAnswerInputs()}
+                
 
                 {questions.map((question, index) => (
                     <div key={index} className="container_question">
