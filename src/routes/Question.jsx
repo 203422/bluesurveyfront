@@ -49,7 +49,7 @@ const Question = ({ questions, setQuestions }) => {
     };
 
     const handleDeleteQuestion = (index) => {
-        const updatedQuestions  = [...questions];
+        const updatedQuestions = [...questions];
         updatedQuestions.splice(index, 1);
         setQuestions(updatedQuestions);
     }
@@ -121,18 +121,13 @@ const Question = ({ questions, setQuestions }) => {
                             Cancelar
                         </button>
                     )}
-                    {renderAnswerInputs()}
                 </div>
             </div>
 
 
-
-
-
-
             <div className="content_questions">
-                
 
+                {renderAnswerInputs()}
                 {questions.map((question, index) => (
                     <div key={index} className="container_question">
                         <p>Tipo de pregunta: {question.type}</p>
@@ -146,10 +141,10 @@ const Question = ({ questions, setQuestions }) => {
                         {!editMode && (
                             <div className="container_icons_question">
                                 <button className="button_edit" type="button">
-                                    <img  src={editIcon} onClick={() => handleEditQuestion(index)} />
+                                    <img src={editIcon} onClick={() => handleEditQuestion(index)} />
                                 </button>
                                 <button className="button_delete" type="button">
-                                    <img  src={deleteIcon} onClick={() => handleDeleteQuestion(index)} />
+                                    <img src={deleteIcon} onClick={() => handleDeleteQuestion(index)} />
                                 </button>
                             </div>
                         )}

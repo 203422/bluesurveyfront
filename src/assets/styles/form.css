@@ -23,6 +23,11 @@
     border-radius: .5rem;
 }
 
+.input:focus {
+    border: solid 1px var(--blueColor);
+    outline: none;
+}
+
 .label, .input {
     font-size: 1.6rem;
     margin-bottom: 1rem;

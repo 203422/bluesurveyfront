@@ -161,7 +161,7 @@
 }
 
 .survey_pre_content {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 40rem;
 }
 
@@ -195,5 +195,9 @@
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+  }
+
+  .info_text_question {
+    color: #888;
   }
 

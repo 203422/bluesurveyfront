@@ -33,7 +33,7 @@ const Header = ({ children }) => {
                 <nav className="nav container">
                     <ul className="ul">
                         <li className="li">
-                            <Link className="link" to="/dashboard">Dashboard</Link>
+                            <Link className="link" to="/dashboard">Mis encuestas</Link>
                         </li>
                         <li className="li">
                             <Link className="link" to="/me">Perfil</Link>

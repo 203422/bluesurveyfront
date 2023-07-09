@@ -4,7 +4,7 @@ import API_URL from '../auth/constants';
 import { useAuth } from '../auth/AuthProvider';
 import Question from '../routes/Question';
 
-const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey }) => {
+const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey, updateSurvey }) => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

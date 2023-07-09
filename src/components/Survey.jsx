@@ -1,16 +1,18 @@
 import API_URL from '../auth/constants'
 import { useAuth } from '../auth/AuthProvider'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import xmark from '../assets/img/xmark.svg'
 import deleteIcon from '../assets/img/delete.svg'
 import editIcon from '../assets/img/edit.svg'
 import SurveyModal from '../components/SurveyModal'
+import shareIcon from '../assets/img/share.svg'
 
 const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
+
+
     const [showSurvey, setShowSurvey] = useState({});
     const [editMode, setEditMode] = useState(false)
-
 
     const auth = useAuth();
 
@@ -30,6 +32,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
         if (response.ok) {
             const json = await response.json();
             setShowSurvey(json)
+            console.log(json)
         }
     }
 
@@ -68,9 +71,13 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                 survey={showSurvey}
                 id={id}
                 loadDataSurvey={loadDataSurvey}
-                
+
             />
         )
+    }
+
+    const shareSurvey = () => {
+
     }
 
     return (
@@ -89,7 +96,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                                     <p className='question'>{question.question}</p>
 
                                     {question.type == "abierta" ? <div className='container_answer_open'>
-                                        <p>Escribe una o varias palabras...</p>
+                                        <p className='info_text_question'>Escribe una o varias palabras...</p>
                                     </div> : null}
                                     <ul>
                                         {question.answers && question.answers.map((answer, index) => (
@@ -106,6 +113,9 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                         </button>
                         <button className='button_edit' onClick={enableEditMode}>
                             <img src={editIcon} />
+                        </button>
+                        <button className='button_share' onClick={shareSurvey}>
+                            <img src={shareIcon} />
                         </button>
                     </div>
 
