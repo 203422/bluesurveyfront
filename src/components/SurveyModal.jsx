@@ -3,6 +3,7 @@ import '../assets/styles/survey.css'
 import API_URL from '../auth/constants';
 import { useAuth } from '../auth/AuthProvider';
 import Question from '../routes/Question';
+import { Toaster, toast } from 'react-hot-toast';
 
 const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey, updateSurvey }) => {
 
@@ -52,6 +53,7 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                 const newSurvey = await response.json();
                 updateSurvey((surveys) => [...surveys, newSurvey])
                 console.log('Encuesta creada correctamente');
+                toast.success('Encuesta creada')
                 setTitle("")
                 setDescription("")
                 setQuestions([])
@@ -92,7 +94,7 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                 })
             })
             if (response.ok) {
-                console.log('Encuesta actualizada')
+                toast.success('Encuesta actualizada')
                 loadDataSurvey();
             }
 
@@ -157,6 +159,16 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                     </div>
                 </div>
             }
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        fontSize: "1.6rem",
+                        backgroundColor: "#fff"
+                    }
+                }}
+            />
         </>
     );
 }

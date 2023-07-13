@@ -25,14 +25,18 @@
     color: var(--whiteColor);
 }
 
-.container_icons_question{
+.container_icons_question {
     display: flex;
     justify-content: center;
     gap: 1rem;
 }
 
-.button_edit, .button_delete:hover {
+.button_edit:hover,
+.button_delete:hover,
+.button_share:hover,
+.button_results:hover {
     cursor: pointer;
+    border: solid 1px var(--gray);
 }
 
 .content_questions {
@@ -40,9 +44,14 @@
     overflow-y: scroll;
 }
 
-.button_edit, .button_delete, .button_share {
+.button_edit,
+.button_delete,
+.button_share,
+.button_results {
     background-color: var(--whiteColor);
-    border: none;
+    padding: .5rem;
+    border: solid 1px transparent;
+    transition: border .3s ease;
 }
 
 .container_add_answer {

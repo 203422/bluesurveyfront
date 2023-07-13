@@ -1,0 +1,24 @@
+.container_reports {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    row-gap: 2rem;
+}
+
+.container_report{
+    border: solid 1px var(--gray);
+    border-radius: 1rem;
+    width: 50rem;
+}
+
+.container_title_report {
+    background-color: var(--blueColorB);
+    padding: 1rem 2rem;
+    color: var(--whiteColor);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.container_grafica {
+    width: 500rem;
+}

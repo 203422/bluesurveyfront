@@ -6,13 +6,16 @@ import deleteIcon from '../assets/img/delete.svg'
 import editIcon from '../assets/img/edit.svg'
 import SurveyModal from '../components/SurveyModal'
 import shareIcon from '../assets/img/share.svg'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import resultsIcon from '../assets/img/results.svg'
+import { Toaster, toast } from 'react-hot-toast';
+import { Link, json } from "react-router-dom";
 
 const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
-
-
     const [showSurvey, setShowSurvey] = useState({});
     const [editMode, setEditMode] = useState(false)
+    // const [showResults, setShowResults] = useState(false)
 
     const auth = useAuth();
 
@@ -32,7 +35,6 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
         if (response.ok) {
             const json = await response.json();
             setShowSurvey(json)
-            console.log(json)
         }
     }
 
@@ -47,8 +49,10 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
         if (response.ok) {
             console.log('Encuesta eliminada')
+            toast.success('Encuesta eliminada')
             closeSurvey(null)
             updateSurveys();
+
         } else {
             console.log('Error al eliminar')
         }
@@ -74,10 +78,6 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
             />
         )
-    }
-
-    const shareSurvey = () => {
-
     }
 
     return (
@@ -114,11 +114,16 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                         <button className='button_edit' onClick={enableEditMode}>
                             <img src={editIcon} />
                         </button>
-                        <button className='button_share' onClick={shareSurvey}>
-                            <img src={shareIcon} />
-                        </button>
+                        <CopyToClipboard text={`http://localhost:5173/public-survey/${id}`}>
+                            <button className='button_share' onClick={() => toast.success('Link copiado')}>
+                                <img src={shareIcon} />
+                            </button>
+                        </CopyToClipboard>
+                        <Link className='button_results' type='button' to={`/results/${id}`} >
+                            <img src={resultsIcon} />
+                        </Link>
                     </div>
-
+                    
                 </div>
             </div>
         </>

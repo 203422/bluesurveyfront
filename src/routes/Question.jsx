@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import '../assets/styles/question.css'
 import editIcon from '../assets/img/edit.svg'
 import deleteIcon from '../assets/img/delete.svg'
+import { toast } from 'react-hot-toast';
+
 
 const Question = ({ questions, setQuestions }) => {
     const [currentQuestion, setCurrentQuestion] = useState("");
@@ -23,8 +25,10 @@ const Question = ({ questions, setQuestions }) => {
             setQuestions(updatedQuestions);
             setSelectedQuestionIndex(null);
             setEditMode(false);
+            toast.success('Cambios guardados')
         } else {
             setQuestions([...questions, newQuestion]);
+            toast.success('Pregunta agregada')
         }
 
         setCurrentQuestion("");
@@ -52,6 +56,7 @@ const Question = ({ questions, setQuestions }) => {
         const updatedQuestions = [...questions];
         updatedQuestions.splice(index, 1);
         setQuestions(updatedQuestions);
+        toast.success('Pregunta eliminada')
     }
 
     const renderAnswerInputs = () => {

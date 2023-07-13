@@ -5,6 +5,7 @@ import API_URL from "../auth/constants";
 import Button from '../components/Button'
 import Wave from '../layout/Wave'
 
+
 const Login = () => {
 
     const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ const Login = () => {
                 console.log("Sesión iniciada")
 
                 const json = await response.json();
-                
+
                 if (json.body.accessToken && json.body.refreshToken) {
                     console.log(json)
                     // console.log("Access Token", json.body.accessToken, "RefreshToken", json.body.refreshToken)

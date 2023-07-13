@@ -14,7 +14,7 @@ const Home = () => {
 
     return (
         <>
-        <Wave />
+            <Wave />
             <div className='container_home'>
                 <div className='content'>
                     <section className='container_title'>

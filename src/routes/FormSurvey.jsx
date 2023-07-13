@@ -3,8 +3,12 @@ import API_URL from "../auth/constants"
 import '../assets/styles/formSurvey.css'
 import Wave from "../layout/Wave";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
+import { toast, Toaster } from "react-hot-toast";
 
 const FormSurvey = () => {
+
+  const auth = useAuth();
   const { id } = useParams()
 
   useEffect(() => {
@@ -12,7 +16,7 @@ const FormSurvey = () => {
   }, [])
 
   const [showSurvey, setShowSurvey] = useState({})
-  const [inputsValue, setInputsValue] = useState({ surveyId: id })
+  const [inputsValue, setInputsValue] = useState({})
 
   const getSurvey = async () => {
     const response = await fetch(`${API_URL}/public-survey/${id}`, {
@@ -57,15 +61,60 @@ const FormSurvey = () => {
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputsValue)
-  }
+
+    const formattedAnswers = Object.entries(inputsValue).reduce(
+      (acc, [questionIndex, value]) => {
+        const question = showSurvey.questions[questionIndex];
+        const questionType = question.type;
+        const questionLabel = question.question;
+
+        if (!acc.answers[questionType]) {
+          acc.answers[questionType] = {};
+        }
+
+        if (Array.isArray(value)) {
+          acc.answers[questionType][questionLabel] = value;
+        } else {
+          acc.answers[questionType][questionLabel] = value;
+        }
+
+        return acc;
+      },
+      { answers: {} }
+    );
+
+
+    const response = await fetch(`${API_URL}/public-survey`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${auth.getAccessToken()}`
+      },
+      body: JSON.stringify({
+        answers: formattedAnswers.answers,
+        surveyId: id
+      })
+
+
+    })
+    if (response.ok) {
+      toast.success('Encuesta enviada, ¡Gracias por responder!', {
+        duration: 3000,
+        icon: "👍"
+      })
+    }
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  };
+
 
   return (
     <>
       <Wave />
-      {console.log(id)}
       <div className="container_form_public container">
         <form onSubmit={handleSubmit} className="container_form_public_content">
           <div className="header_form_public">
@@ -124,16 +173,25 @@ const FormSurvey = () => {
                       ))}
                     </div>
                   )}
-
-                  {question.answer}
-
                 </div>
               </div>
             ))}
+
+
             <button className="aceptar button_modal button_public">Enviar</button>
           </div>
         </form>
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            fontSize: "1.6rem",
+            backgroundColor: "#fff"
+          }
+        }}
+      />
     </>
   )
 }
