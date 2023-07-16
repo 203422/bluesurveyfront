@@ -56,6 +56,7 @@ const Question = ({ questions, setQuestions }) => {
         const updatedQuestions = [...questions];
         updatedQuestions.splice(index, 1);
         setQuestions(updatedQuestions);
+        
         toast.success('Pregunta eliminada')
     }
 

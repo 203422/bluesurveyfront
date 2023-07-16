@@ -5,15 +5,19 @@ import { useParams } from "react-router-dom";
 import Header from "../layout/Header";
 import '../assets/styles/reports.css'
 import { BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar } from "recharts";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const Reports = () => {
     const { id } = useParams();
     const auth = useAuth();
 
     const [answers, setAnswers] = useState({})
+    const [survey, setSurvey] = useState({})
 
     useEffect(() => {
-        getAnswers();
+        getAnswers(),
+            getSurvey()
     }, [])
 
     const getAnswers = async () => {
@@ -31,6 +35,21 @@ const Reports = () => {
         }
     }
 
+    const getSurvey = async () => {
+        const response = await fetch(`${API_URL}/surveys/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${auth.getAccessToken()}`
+            }
+        })
+
+        if (response.ok) {
+            const json = await response.json();
+            setSurvey(json)
+        }
+    }
+
     const renderQuestionDivs = () => {
         const { uniqueAnswersOptionOpen, uniqueAnswersOptionUnica, uniqueAnswersOptionMultiple } = answers;
         const questionDivs = [];
@@ -44,9 +63,14 @@ const Reports = () => {
 
             const uniqueDiv = Array.from(uniqueQuestions).map((question) => (
                 <div key={question} className="container_report">
-                    <h3>{question}</h3>
-                    {renderAnswers(question)}
-                    {renderGraphic(question)}
+                    <div className="title_report">
+                        <h3>{question}</h3>
+                    </div>
+                    <div className="content_report content_report_open">
+                        <p className="respuesta">Respuestas</p>
+                        {renderAnswers(question)}
+                    </div>
+
                 </div>
             ));
 
@@ -62,9 +86,12 @@ const Reports = () => {
 
             const uniqueDiv = Array.from(uniqueQuestions).map((question) => (
                 <div key={question} className="container_report">
-                    <h3>{question}</h3>
-                    {renderAnswers(question)}
-                    {renderGraphic(question)}
+                    <div className="title_report">
+                        <h3>{question}</h3>
+                    </div>
+                    <div className="content_report">
+                        {renderGraphic(question)}
+                    </div>
                 </div>
             ))
 
@@ -80,9 +107,13 @@ const Reports = () => {
 
             const uniqueDiv = Array.from(uniqueQuestions).map((question) => (
                 <div key={question} className="container_report">
-                    <h3>{question}</h3>
-                    {renderAnswers(question)}
-                    {renderGraphic(question)}
+                    <div className="title_report">
+                        <h3>{question}</h3>
+                    </div>
+
+                    <div className="content_report">
+                        {renderGraphic(question)}
+                    </div>
                 </div>
             ))
 
@@ -115,7 +146,7 @@ const Reports = () => {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="repeticiones" fill="#5D89BF" />
+                            <Bar dataKey="repeticiones" fill="#655DBB" />
                         </BarChart>
                     </ResponsiveContainer>
                 );
@@ -142,7 +173,7 @@ const Reports = () => {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="repeticiones" fill="#25B7B5" />
+                            <Bar dataKey="repeticiones" fill="#BFACE2" />
                         </BarChart>
                     </ResponsiveContainer>
                 );
@@ -158,19 +189,66 @@ const Reports = () => {
             const [q, answer] = key.split(":").map((item) => item.trim());
             if (q === question) {
                 return (
-                    <p key={key}>
-                        {answer} - Total respuestas: {count}
-                    </p>
+                    <>
+                        <p className="p_answer" key={key}>{answer}: {count}</p>
+                    </>
+
                 );
             }
             return null;
         });
     };
 
+    const downloadPdf = () => {
+        const capture = document.querySelector('.container_reports');
+        html2canvas(capture).then((canvas) => {
+            const imgData = canvas.toDataURL('img/png');
+            const doc = new jsPDF('p', 'mm', 'a4');
+    
+            const imgWidth = doc.internal.pageSize.getWidth() - 25; // Ancho de imagen considerando márgenes
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    
+            const marginTop = 10; // Margen superior (ajustable)
+    
+            const marginLeft = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+    
+            doc.setFontSize(16); // Tamaño de fuente del título
+            doc.setFont('helvetica', 'bold'); // Establecer estilo de fuente en negrita
+            const title = `Reporte de encuesta: ${survey.title}`;
+            const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+            const titleMarginLeft = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    
+            let remainingHeight = doc.internal.pageSize.getHeight() - (marginTop + imgHeight + 20);
+            let yOffset = marginTop + 20;
+            let currentPage = 1;
+    
+            while (remainingHeight < 0) {
+                doc.addPage();
+                currentPage++;
+                remainingHeight = doc.internal.pageSize.getHeight();
+            }
+    
+            doc.setPage(currentPage);
+            doc.text(title, titleMarginLeft, marginTop + 10); // Agregar el título
+            doc.addImage(imgData, 'PNG', marginLeft, yOffset, imgWidth, imgHeight);
+    
+            doc.save('reporte.pdf');
+        });
+    };
+
+
     return (
         <>
             <Header />
-            <div className="container_reports container">{renderQuestionDivs()}</div>
+
+            <div className=" container">
+                <h2 className="title_survey_report">{survey.title}</h2>
+                <button type="button" className="crear_encuesta" onClick={downloadPdf}>Descargar PDF</button>
+                <div className="container_reports">
+
+                    {renderQuestionDivs()}
+                </div>
+            </div>
         </>
     )
 }

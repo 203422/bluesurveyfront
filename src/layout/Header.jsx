@@ -35,9 +35,9 @@ const Header = ({ children }) => {
                         <li className="li">
                             <Link className="link" to="/dashboard">Mis encuestas</Link>
                         </li>
-                        <li className="li">
+                        {/* <li className="li">
                             <Link className="link" to="/me">Perfil</Link>
-                        </li>
+                        </li> */}
                         <li className="li">
                             <a className="link" href="#" onClick={handleSignout}>Salir</a>
                         </li>

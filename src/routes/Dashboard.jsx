@@ -61,7 +61,7 @@ const Dashboard = () => {
                             <div className='icons'>
 
                             </div>
-                            {survey.title}
+                           <p className='title_survey_dashboard'>{survey.title}</p>
                         </div>
                         <div className='container_survey_footer'>
                             Preguntas: {survey.questions.length}
