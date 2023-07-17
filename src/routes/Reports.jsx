@@ -37,7 +37,7 @@ const Reports = () => {
     }
 
     const getSurvey = async () => {
-        const response = await fetch(`${API_URL}/surveys/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
