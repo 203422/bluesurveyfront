@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../assets/styles/survey.css'
-import API_URL from '../auth/constants';
 import { useAuth } from '../auth/AuthProvider';
 import Question from '../routes/Question';
 import { Toaster, toast } from 'react-hot-toast';
 
+
 const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey, updateSurvey }) => {
 
+    const API_URL = import.meta.env.VITE_API_URL;
+    
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [errorMessage, setErrorMessage] = useState("");

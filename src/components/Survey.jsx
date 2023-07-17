@@ -1,4 +1,3 @@
-import API_URL from '../auth/constants'
 import { useAuth } from '../auth/AuthProvider'
 import { useEffect, useState, useRef } from 'react';
 import xmark from '../assets/img/xmark.svg'
@@ -12,6 +11,8 @@ import { Toaster, toast } from 'react-hot-toast';
 import { Link, json } from "react-router-dom";
 
 const Survey = ({ id, closeSurvey, updateSurveys }) => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [showSurvey, setShowSurvey] = useState({});
     const [editMode, setEditMode] = useState(false)

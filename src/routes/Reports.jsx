@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import API_URL from "../auth/constants";
 import { useAuth } from "../auth/AuthProvider";
 import { useParams } from "react-router-dom";
 import Header from "../layout/Header";
@@ -8,7 +7,11 @@ import { BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, Y
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
+
 const Reports = () => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const { id } = useParams();
     const auth = useAuth();
 
@@ -204,34 +207,34 @@ const Reports = () => {
         html2canvas(capture).then((canvas) => {
             const imgData = canvas.toDataURL('img/png');
             const doc = new jsPDF('p', 'mm', 'a4');
-    
+
             const imgWidth = doc.internal.pageSize.getWidth() - 25; // Ancho de imagen considerando márgenes
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    
+
             const marginTop = 10; // Margen superior (ajustable)
-    
+
             const marginLeft = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-    
+
             doc.setFontSize(16); // Tamaño de fuente del título
             doc.setFont('helvetica', 'bold'); // Establecer estilo de fuente en negrita
             const title = `Reporte de encuesta: ${survey.title}`;
             const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
             const titleMarginLeft = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    
+
             let remainingHeight = doc.internal.pageSize.getHeight() - (marginTop + imgHeight + 20);
             let yOffset = marginTop + 20;
             let currentPage = 1;
-    
+
             while (remainingHeight < 0) {
                 doc.addPage();
                 currentPage++;
                 remainingHeight = doc.internal.pageSize.getHeight();
             }
-    
+
             doc.setPage(currentPage);
             doc.text(title, titleMarginLeft, marginTop + 10); // Agregar el título
             doc.addImage(imgData, 'PNG', marginLeft, yOffset, imgWidth, imgHeight);
-    
+
             doc.save('reporte.pdf');
         });
     };

@@ -1,3 +1,0 @@
-const API_URL = "http://localhost:4000/auth";
-
-export default API_URL;

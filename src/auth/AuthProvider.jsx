@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, useEffect } from 'react'
-import API_URL from "../auth/constants";
+
 
 const AuthContext = createContext({
     isAuthenticated: false,
@@ -11,6 +11,8 @@ const AuthContext = createContext({
 })
 
 const AuthProvider = ({ children }) => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState("")

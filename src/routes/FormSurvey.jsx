@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react"
-import API_URL from "../auth/constants"
 import '../assets/styles/formSurvey.css'
 import Wave from "../layout/Wave";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 import { toast, Toaster } from "react-hot-toast";
 
+
 const FormSurvey = () => {
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const auth = useAuth();
   const { id } = useParams()

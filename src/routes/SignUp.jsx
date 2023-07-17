@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
-import API_URL from "../auth/constants";
 import '../assets/styles/form.css'
 import Button from "../components/Button";
 import Wave from "../layout/Wave";
 
+
+
 const SignUp = () => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");

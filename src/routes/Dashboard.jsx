@@ -1,5 +1,4 @@
 import { useAuth } from '../auth/AuthProvider'
-import API_URL from '../auth/constants'
 import { useEffect, useState } from 'react'
 import '../assets/styles/dashboard.css'
 import Header from '../layout/Header'
@@ -7,7 +6,10 @@ import SurveyModal from '../components/SurveyModal'
 import Survey from '../components/Survey'
 import createIcon from '../assets/img/createW.svg'
 
+
 const Dashboard = () => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [stateModal, setStateModal] = useState(false)
     const [surveys, setSurveys] = useState([])
