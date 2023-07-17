@@ -113,7 +113,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                         <button className='button_edit' onClick={enableEditMode}>
                             <img src={editIcon} />
                         </button>
-                        <CopyToClipboard text={`${import.meta.env.VITE_API_URL}/public-survey/${id}`}>
+                        <CopyToClipboard text={`https://bluesurvey.netlify.app//${id}`}>
                             <button className='button_share' onClick={() => toast.success('Link copiado')}>
                                 <img src={shareIcon} />
                             </button>
