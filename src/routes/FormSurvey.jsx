@@ -19,7 +19,7 @@ const FormSurvey = () => {
   const [inputsValue, setInputsValue] = useState({})
 
   const getSurvey = async () => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/public-survey/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
