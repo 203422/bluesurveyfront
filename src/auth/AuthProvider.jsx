@@ -12,15 +12,13 @@ const AuthContext = createContext({
 
 const AuthProvider = ({ children }) => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState("")
     const [user, setUser] = useState("")
 
     const requestNewAccessToken = async (refreshToken) => {
         try {
-            const response = await fetch(`$${import.meta.env.VITE_API_URL}/refresh-token`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/refresh-token`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
     const getUserInfo = async (accessToken) => {
         try {
-            const response = await fetch(`${API_URL}/user`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

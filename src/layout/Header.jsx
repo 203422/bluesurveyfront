@@ -5,15 +5,13 @@ import '../assets/styles/header.css'
 
 const Header = ({ children }) => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const auth = useAuth();
 
     const handleSignout = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${API_URL}/signout`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/signout`, {
                 method: "DELETE",
                 headers: {
                     "Content-type": "application/json",
