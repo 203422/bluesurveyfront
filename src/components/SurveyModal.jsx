@@ -6,8 +6,6 @@ import { Toaster, toast } from 'react-hot-toast';
 
 
 const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey, updateSurvey }) => {
-
-    const API_URL = import.meta.env.VITE_API_URL;
     
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -37,7 +35,7 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
 
         try {
 
-            const response = await fetch(`${API_URL}/surveys`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +81,7 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
 
     const sendUpdateSurvey = async () => {
         try {
-            const response = await fetch(`${API_URL}/surveys/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

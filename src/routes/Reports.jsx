@@ -10,8 +10,6 @@ import jsPDF from "jspdf";
 
 const Reports = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const { id } = useParams();
     const auth = useAuth();
 
@@ -24,7 +22,7 @@ const Reports = () => {
     }, [])
 
     const getAnswers = async () => {
-        const response = await fetch(`${API_URL}/results/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/results/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

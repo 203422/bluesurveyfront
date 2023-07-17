@@ -12,8 +12,6 @@ import { Link, json } from "react-router-dom";
 
 const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const [showSurvey, setShowSurvey] = useState({});
     const [editMode, setEditMode] = useState(false)
     // const [showResults, setShowResults] = useState(false)
@@ -25,7 +23,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
     }, [])
 
     const loadDataSurvey = async () => {
-        const response = await fetch(`${API_URL}/surveys/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +38,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
     }
 
     const deleteSurvey = async () => {
-        const response = await fetch(`${API_URL}/surveys/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

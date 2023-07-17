@@ -8,8 +8,6 @@ import { toast, Toaster } from "react-hot-toast";
 
 const FormSurvey = () => {
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const auth = useAuth();
   const { id } = useParams()
 
@@ -21,7 +19,7 @@ const FormSurvey = () => {
   const [inputsValue, setInputsValue] = useState({})
 
   const getSurvey = async () => {
-    const response = await fetch(`${API_URL}/public-survey/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +86,7 @@ const FormSurvey = () => {
     );
 
 
-    const response = await fetch(`${API_URL}/public-survey`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/public-survey`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

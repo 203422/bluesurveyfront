@@ -9,8 +9,6 @@ import createIcon from '../assets/img/createW.svg'
 
 const Dashboard = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const [stateModal, setStateModal] = useState(false)
     const [surveys, setSurveys] = useState([])
     const [selectedSurvey, setSelectedSurvey] = useState(null);
@@ -24,7 +22,7 @@ const Dashboard = () => {
 
     const loadSurveys = async () => {
         try {
-            const response = await fetch(`${API_URL}/surveys`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

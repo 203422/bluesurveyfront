@@ -7,8 +7,6 @@ import Wave from '../layout/Wave'
 
 const Login = () => {
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -24,7 +22,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${API_URL}/signin`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/signin`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
