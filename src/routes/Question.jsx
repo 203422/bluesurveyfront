@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import '../assets/styles/question.css'
 import editIcon from '../assets/img/edit.svg'
 import deleteIcon from '../assets/img/delete.svg'
@@ -12,7 +12,38 @@ const Question = ({ questions, setQuestions }) => {
     const [editMode, setEditMode] = useState(false);
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
 
+    const isQuestionTypeSelected = currentQuestionType !== "";
+
     const handleAddQuestion = () => {
+        if (currentQuestion === "") {
+            toast.error('Escribe alguna pregunta', {
+                duration: 3000,
+            })
+
+            return
+        }
+        if (!currentQuestionType) {
+            toast.error('Selecciona el tipo de pregunta', {
+                duration: 3000,
+            })
+            return;
+        }
+
+        if (currentQuestionType === 'opción unica' || currentQuestionType === "opción multiple") {
+
+            if (currentAnswers.length === 0) {
+                toast.error('Agrega al menos una respuesta', {
+                    duration: 3000,
+                });
+                return;
+            } else if (currentAnswers.some(answer => answer === "")) {
+                toast.error('La respuesta no debe estar vacía', {
+                    duration: 3000,
+                });
+                return;
+            }
+        }
+
         const newQuestion = {
             question: currentQuestion,
             type: currentQuestionType,
@@ -56,31 +87,51 @@ const Question = ({ questions, setQuestions }) => {
         const updatedQuestions = [...questions];
         updatedQuestions.splice(index, 1);
         setQuestions(updatedQuestions);
-        
+
         toast.success('Pregunta eliminada')
     }
+
+    const handleDeleteAnswer = (index) => {
+        const updatedAnswers = [...currentAnswers];
+        updatedAnswers.splice(index, 1);
+        setCurrentAnswers(updatedAnswers);
+    };
+
+
+
 
     const renderAnswerInputs = () => {
         if (currentQuestionType === "opción unica" || currentQuestionType === "opción multiple") {
             return (
-                <div className="container_add_answer">
-                    <label className="label">Respuestas:</label>
+                <>
+                    <label className="label label_answers">Respuestas:</label>
                     {currentAnswers.map((answer, index) => (
-                        <input
-                            className="input"
-                            type="text"
-                            key={index}
-                            value={answer}
-                            onChange={(e) => handleAnswerChange(index, e)}
-                            placeholder={`Respuesta ${index + 1}`}
-                        />
+                        <div key={index} className="answer_item">
+                            <input
+                                className="input"
+                                type="text"
+                                value={answer}
+                                onChange={(e) => handleAnswerChange(index, e)}
+                                placeholder={`Respuesta ${index + 1}`}
+                            />
+
+                            <img
+                                src={deleteIcon}
+                                type="button"
+                                className="button_delete_answer"
+                                onClick={() => handleDeleteAnswer(index)}
+                            />
+                        </div>
                     ))}
-                    <button onClick={addAnswer} type="button" className="button add_question">Agregar respuesta</button>
-                </div>
+                    <button onClick={addAnswer} type="button" className="button add_question">
+                        Añadir respuesta
+                    </button>
+                </>
             );
         }
         return null;
     };
+
 
     const addAnswer = () => {
         setCurrentAnswers([...currentAnswers, ""]);
@@ -94,11 +145,12 @@ const Question = ({ questions, setQuestions }) => {
         setEditMode(false);
     };
 
+
     return (
         <>
 
-            <div className="container_create_question">
-                <label className="label">Pregunta</label>
+            <div className="container_add_question">
+                <h3>Pregunta</h3>
                 <input
                     className="input"
                     type="text"
@@ -106,38 +158,42 @@ const Question = ({ questions, setQuestions }) => {
                     value={currentQuestion}
                     onChange={(e) => setCurrentQuestion(e.target.value)}
                 />
-
                 <div className="container_type_question">
-                    <label className="label">Tipo de pregunta</label>
+                    <label className="label label-type">Tipo de respuesta: </label>
                     <select
                         className="select button"
                         value={currentQuestionType}
                         onChange={(e) => setCurrentQuestionType(e.target.value)}
                     >
-                        <option value="">Tipo de pregunta</option>
-                        <option value="abierta">Pregunta abierta</option>
+                        <option value="">Tipo</option>
+                        <option value="abierta">Texto de respuesta</option>
                         <option value="opción unica">Opción única</option>
                         <option value="opción multiple">Opción múltiple</option>
                     </select>
-                    <button className="button_add_question aceptar button" type="button" onClick={handleAddQuestion}>
-                        {editMode ? "Guardar cambios" : "Agregar pregunta"}
-                    </button>
+                    {currentQuestionType && <button
+                        className="button_add_question aceptar button"
+                        type="button"
+                        onClick={handleAddQuestion}
+                    >
+                        {editMode ? "Guardar cambios" : "Agregar a la encuesta"}
+                    </button>}
                     {editMode && (
                         <button type="button" className="button" onClick={handleCancelEdit}>
                             Cancelar
                         </button>
                     )}
+                    <div className="container_add_answers">
+                        {renderAnswerInputs()}
+                    </div>
                 </div>
+
             </div>
 
-
             <div className="content_questions">
-
-                {renderAnswerInputs()}
                 {questions.map((question, index) => (
                     <div key={index} className="container_question">
-                        <p>Tipo de pregunta: {question.type}</p>
                         <p>Pregunta: {question.question}</p>
+                        <p>Tipo de respuesta: {question.type}</p>
                         <p>Respuestas:</p>
                         <ul>
                             {question.answers.map((answer, answerIndex) => (
@@ -157,7 +213,6 @@ const Question = ({ questions, setQuestions }) => {
                     </div>
                 ))}
             </div>
-
         </>
     );
 };

@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import '../assets/styles/form.css'
 import Button from "../components/Button";
 import Wave from "../layout/Wave";
-
+import { Toaster, toast } from 'react-hot-toast';
 
 
 const SignUp = () => {
@@ -12,7 +12,6 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
 
     const auth = useAuth();
     const goTo = useNavigate();
@@ -39,15 +38,12 @@ const SignUp = () => {
             });
 
             if (response.ok) {
-                console.log("Usuario creado correctamente")
-                setErrorMessage("");
                 goTo("/login")
 
             } else {
-                console.log("Error Algo pasó")
                 const errorData = await response.json();
                 const messageError = errorData.body.error;
-                setErrorMessage(messageError)
+                toast.error(messageError)
             }
 
         } catch (error) {
@@ -64,8 +60,7 @@ const SignUp = () => {
             <Wave />
             <div className="form-container">
                 <form className="container form" onSubmit={handleSubmit}>
-                    <h2 className="title_signup">Sign Up</h2>
-                    {errorMessage && <p className="alert">{errorMessage}</p>}
+                    <h2 className="title_signup">Registro</h2>
                     <label className="label">Nombre</label>
                     <input
                         className="input"
@@ -100,12 +95,18 @@ const SignUp = () => {
                     <p className="text-center">¿Ya tienes cuenta? <span className="span" onClick={handleClick}>Inicia Sesión</span> </p>
                 </form>
             </div>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        fontSize: "1.6rem",
+                        backgroundColor: "#fff"
+                    }
+                }}
+            />
 
         </>
-
-
-
-
     );
 }
 

@@ -1,9 +1,27 @@
 .container_type_question {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    row-gap: .5rem;
-    margin-bottom: 1rem;
+    justify-content: center;
+    padding: 1rem;
+    column-gap: 2rem;
+
+}
+
+.container_add_answers {
+    text-align: center;
+    width: 100%;
+}
+
+.answer_item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label_answers {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
 }
 
 .button {
@@ -39,10 +57,6 @@
     border: solid 1px var(--gray);
 }
 
-.content_questions {
-    max-height: 20rem;
-    overflow-y: scroll;
-}
 
 .button_edit,
 .button_delete,
@@ -54,10 +68,13 @@
     transition: border .3s ease;
 }
 
-.container_add_answer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    margin-bottom: 1rem;
+
+.label-type {
+    align-self: center;
+    font-weight: 500;
+    margin: 0;
+}
+
+.button_delete_answer {
+    cursor: pointer;
 }

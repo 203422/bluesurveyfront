@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import Button from '../components/Button'
 import Wave from '../layout/Wave'
+import { Toaster, toast } from 'react-hot-toast';
 
 
 const Login = () => {
@@ -34,23 +35,20 @@ const Login = () => {
             });
 
             if (response.ok) {
-                setErrorMessage("");
                 console.log("Sesión iniciada")
 
                 const json = await response.json();
 
                 if (json.body.accessToken && json.body.refreshToken) {
                     console.log(json)
-                    // console.log("Access Token", json.body.accessToken, "RefreshToken", json.body.refreshToken)
                     auth.saveUser(json)
                     goTo("/dashboard")
                 }
 
             } else {
-                console.log("Error Algo pasó")
                 const errorData = await response.json();
                 const messageError = errorData.body.error;
-                setErrorMessage(messageError)
+                toast.error(messageError)
             }
 
         } catch (error) {
@@ -68,7 +66,6 @@ const Login = () => {
             <div className="form-container">
                 <form className="form container" onSubmit={handleSubmit}>
                     <h2 className="title_login">Bienvenido de nuevo</h2>
-                    {errorMessage && <p className="alert">{errorMessage}</p>}
                     <label className="label">Correo</label>
                     <input
                         className="input"
@@ -91,6 +88,16 @@ const Login = () => {
                     <p className="text-center">¿Aún no tienes cuenta? <span className="span" onClick={handleClick}>Registrate</span> </p>
                 </form>
             </div>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        fontSize: "1.6rem",
+                        backgroundColor: "#fff"
+                    }
+                }}
+            />
         </>
     );
 }

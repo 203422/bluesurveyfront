@@ -6,6 +6,8 @@ import '../assets/styles/reports.css'
 import { BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis, Bar } from "recharts";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { Toaster, toast } from 'react-hot-toast'
+
 
 
 const Reports = () => {
@@ -22,6 +24,7 @@ const Reports = () => {
     }, [])
 
     const getAnswers = async () => {
+        const toastID = toast.loading('Cargando reportes...')
         const response = await fetch(`${import.meta.env.VITE_API_URL}/results/${id}`, {
             method: "GET",
             headers: {
@@ -31,8 +34,14 @@ const Reports = () => {
         })
 
         if (response.ok) {
+            toast.remove(toastID)
             const json = await response.json();
             setAnswers(json)
+        } else {
+            const errorData = await response.json()
+            const messageError = errorData.body.error;
+            toast.remove(toastID)        
+            toast.success(messageError)
         }
     }
 
@@ -67,7 +76,7 @@ const Reports = () => {
                     <div className="title_report">
                         <h3>{question}</h3>
                     </div>
-                    <div className="content_report content_report_open">
+                    <div key={`content_name_${question}`} className="content_report content_report_open">
                         <p className="respuesta">Respuestas</p>
                         {renderAnswers(question)}
                     </div>
@@ -209,12 +218,12 @@ const Reports = () => {
             const imgWidth = doc.internal.pageSize.getWidth() - 25; // Ancho de imagen considerando márgenes
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            const marginTop = 10; // Margen superior (ajustable)
+            const marginTop = 10;
 
             const marginLeft = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
 
-            doc.setFontSize(16); // Tamaño de fuente del título
-            doc.setFont('helvetica', 'bold'); // Establecer estilo de fuente en negrita
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
             const title = `Reporte de encuesta: ${survey.title}`;
             const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
             const titleMarginLeft = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
@@ -230,7 +239,7 @@ const Reports = () => {
             }
 
             doc.setPage(currentPage);
-            doc.text(title, titleMarginLeft, marginTop + 10); // Agregar el título
+            doc.text(title, titleMarginLeft, marginTop + 10);
             doc.addImage(imgData, 'PNG', marginLeft, yOffset, imgWidth, imgHeight);
 
             doc.save('reporte.pdf');
@@ -250,6 +259,17 @@ const Reports = () => {
                     {renderQuestionDivs()}
                 </div>
             </div>
+
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        fontSize: "1.6rem",
+                        backgroundColor: "#fff"
+                    }
+                }}
+            />
         </>
     )
 }

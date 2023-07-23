@@ -6,10 +6,9 @@ import { Toaster, toast } from 'react-hot-toast';
 
 
 const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey, updateSurvey }) => {
-    
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
     const [questions, setQuestions] = useState([])
 
     const auth = useAuth();
@@ -57,13 +56,11 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                 setTitle("")
                 setDescription("")
                 setQuestions([])
-                setErrorMessage("")
                 changeState(false)
             } else {
-                console.log("La encuesta no se pudo crear");
                 const errorData = await response.json()
                 const messageError = errorData.body.error;
-                setErrorMessage(messageError)
+                toast.error(messageError)
             }
 
         } catch (error) {
@@ -74,7 +71,6 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
     const toggleModal = () => {
         setTitle("");
         setDescription("")
-        setErrorMessage("")
         setQuestions([])
         changeState(false)
     }
@@ -102,7 +98,6 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
             console.log('Error al actualizar')
         }
         changeState(false)
-
     }
 
 
@@ -113,17 +108,16 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                     <div className='container_modal container'>
                         <form className='form_modal' onSubmit={handleSubmit}>
                             <div className='header_modal'>
-                                {errorMessage && <p className="alert">{errorMessage}</p>}
-                                <label className='label'>Nombre de la encuesta</label>
+                                <h3>Nombre de la encuesta</h3>
                                 <input
                                     className='input'
-                                    placeholder='Título'
+                                    placeholder='Nombre'
                                     type='text'
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
 
-                                <label className='label'>Descripcion</label>
+                                <h3>Descripcion</h3>
                                 <input
                                     className='input'
                                     placeholder="Descripcion"
@@ -141,16 +135,14 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                                 />
 
                             </div>
-
+                            
                             <div className='footer_modal'>
                                 <div className='buttons_modal'>
 
                                     {
                                         enableEditMode ? <button type='button' className='aceptar button_modal' onClick={sendUpdateSurvey}>Actualizar encuesta</button> :
-                                            <button className='aceptar button_modal' type='submit'>Aceptar</button>
+                                            <button className='aceptar button_modal' type='submit'>Crear encuesta</button>
                                     }
-
-
 
                                     <button type='button' className='cancelar button_modal' onClick={toggleModal}>Cancelar</button>
                                 </div>
@@ -159,6 +151,7 @@ const Survey = ({ state, changeState, enableEditMode, survey, id, loadDataSurvey
                     </div>
                 </div>
             }
+
             <Toaster
                 position="top-center"
                 reverseOrder={false}

@@ -5,6 +5,7 @@ import Header from '../layout/Header'
 import SurveyModal from '../components/SurveyModal'
 import Survey from '../components/Survey'
 import createIcon from '../assets/img/createW.svg'
+import { toast } from 'react-hot-toast'
 
 
 const Dashboard = () => {
@@ -22,6 +23,7 @@ const Dashboard = () => {
 
     const loadSurveys = async () => {
         try {
+            
             const response = await fetch(`${import.meta.env.VITE_API_URL}/surveys`, {
                 method: "GET",
                 headers: {
@@ -29,27 +31,26 @@ const Dashboard = () => {
                     Authorization: `Bearer ${auth.getAccessToken()}`
                 }
             })
-
+           
             if (response.ok) {
+                toast.remove()
                 const json = await response.json();
                 setSurveys(json)
             } else {
+                toast.error('Error en la conexion')
                 console.log('Error en la conexion')
             }
 
         } catch (error) {
             console.log(error)
         }
+        
     }
 
     return (
         <>
             <Header />
-
-
-
             <div className='container'>
-                {/* <h1>Dashboard de {auth.getUser().name}</h1> */}
                 <button className='crear_encuesta' onClick={() => setStateModal(!stateModal)}>
                     Crear encuesta
                     <img src={createIcon} className='icon_create' />
@@ -61,7 +62,7 @@ const Dashboard = () => {
                             <div className='icons'>
 
                             </div>
-                           <p className='title_survey_dashboard'>{survey.title}</p>
+                            <p className='title_survey_dashboard'>{survey.title}</p>
                         </div>
                         <div className='container_survey_footer'>
                             Preguntas: {survey.questions.length}
@@ -81,13 +82,7 @@ const Dashboard = () => {
                     changeState={setStateModal}
                     updateSurvey={setSurveys}
                 />
-
-
             </div>
-
-
-
-
         </>
     );
 }

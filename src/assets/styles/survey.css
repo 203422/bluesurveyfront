@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
 }
 
 .label_modal {
@@ -36,7 +37,6 @@
 
 .buttons_modal {
     text-align: center;
-
 }
 
 .container_surveys {
@@ -80,12 +80,10 @@
     padding: 5rem;
     border-radius: 2rem;
     max-width: 80rem;
-
+    position: absolute;
+    top: 10vh;
 }
 
-.content_modal {
-    max-height: 50vh;
-}
 
 .footer_modal {
     padding-top: 2rem;
@@ -135,9 +133,8 @@
 .container_question {
     border: solid 1px var(--gray);
     padding: 2rem;
-    color: var(--blackColor);
+    color: #555;
     margin-bottom: 1rem;
-    margin-right: 1rem;
 }
 
 

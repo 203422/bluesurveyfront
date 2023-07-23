@@ -14,8 +14,7 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
 
     const [showSurvey, setShowSurvey] = useState({});
     const [editMode, setEditMode] = useState(false)
-    // const [showResults, setShowResults] = useState(false)
-
+    
     const auth = useAuth();
 
     useEffect(() => {
@@ -113,7 +112,8 @@ const Survey = ({ id, closeSurvey, updateSurveys }) => {
                         <button className='button_edit' onClick={enableEditMode}>
                             <img src={editIcon} />
                         </button>
-                        <CopyToClipboard text={`https://bluesurvey.netlify.app/public-survey/${id}`}>
+
+                         <CopyToClipboard text={`${import.meta.env.VITE_URL_SURVEY}/public-survey/${id}`}>
                             <button className='button_share' onClick={() => toast.success('Link copiado')}>
                                 <img src={shareIcon} />
                             </button>
