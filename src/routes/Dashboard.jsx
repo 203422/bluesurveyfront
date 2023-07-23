@@ -18,6 +18,7 @@ const Dashboard = () => {
     const auth = useAuth();
 
     useEffect(() => {
+        toast.loading('Cargando encuestas...')
         loadSurveys();
     }, [])
 

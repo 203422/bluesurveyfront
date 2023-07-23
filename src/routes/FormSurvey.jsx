@@ -14,9 +14,12 @@ const FormSurvey = () => {
   useEffect(() => {
     getSurvey();
   }, [])
+  
 
   const [showSurvey, setShowSurvey] = useState({})
   const [inputsValue, setInputsValue] = useState({})
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
 
   const getSurvey = async () => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/public-survey/${id}`, {
@@ -64,6 +67,10 @@ const FormSurvey = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formSubmitted) {
+      return;
+    }
+
     const formattedAnswers = Object.entries(inputsValue).reduce(
       (acc, [questionIndex, value]) => {
         const question = showSurvey.questions[questionIndex];
@@ -109,6 +116,8 @@ const FormSurvey = () => {
     setTimeout(() => {
       window.location.reload();
     }, 3000);
+
+    setFormSubmitted(true);
   };
 
 
@@ -178,7 +187,7 @@ const FormSurvey = () => {
             ))}
 
 
-            <button className="aceptar button_modal button_public">Enviar</button>
+            <button className="aceptar button_modal button_public" disabled={formSubmitted}>Enviar</button>
           </div>
         </form>
       </div>
